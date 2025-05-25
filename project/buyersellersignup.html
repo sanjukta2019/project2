@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seller & Buyer Signup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { 
+      font-family: 'Inter', Arial, sans-serif; 
+      background: #f8f9fa; 
+      margin: 0; 
+      color: #1E3A5F;
+    }
+    .main-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .form-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(30,58,95,0.09);
+      padding: 2rem 1.5rem;
+      max-width: 430px;
+      flex: 1 1 340px;
+      min-width: 280px;
+      box-sizing: border-box;
+    }
+    h2 { text-align: center; color: #1E3A5F; margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.25rem; font-weight: 500; }
+    input, select, textarea {
+      width: 100%; padding: 0.7rem; margin-bottom: 1.1rem;
+      border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;
+    }
+    input[type="file"] { padding: 0.3rem 0.2rem; }
+    .btn {
+      background: #1E3A5F; color: #fff;
+      padding: 0.8rem 1.6rem; border: none; border-radius: 5px;
+      font-weight: bold; font-size: 1.1rem; cursor: pointer;
+      width: 100%; margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #00b894; }
+    .error-msg { color: #d32f2f; font-size: 0.95rem; margin-bottom: 1rem; }
+    @media (max-width: 900px) {
+      .main-container { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 600px) {
+      .form-card { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Seller Signup Form -->
+    <form class="form-card" enctype="multipart/form-data" autocomplete="off">
+      <h2>Seller Signup</h2>
+      <label for="businessName">Business Name *</label>
+      <input type="text" id="businessName" name="businessName" required>
+
+      <label for="ownerName">Owner Name *</label>
+      <input type="text" id="ownerName" name="ownerName" required>
+
+      <label for="gstin">GSTIN *</label>
+      <input type="text" id="gstin" name="gstin" pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$" required placeholder="22AAAAA0000A1Z5">
+
+      <label for="turnover">Annual Turnover (₹2-50 Cr) *</label>
+      <select id="turnover" name="turnover" required>
+        <option value="">Select</option>
+        <option value="2-5">₹2-5 Cr</option>
+        <option value="5-10">₹5-10 Cr</option>
+        <option value="10-25">₹10-25 Cr</option>
+        <option value="25-50">₹25-50 Cr</option>
+      </select>
+
+      <label for="bankDetails">Bank Details *</label>
+      <textarea id="bankDetails" name="bankDetails" required placeholder="Bank name, Account number, IFSC"></textarea>
+
+      <label for="categories">Product Categories *</label>
+      <select id="categories" name="categories" multiple required>
+        <option value="electronics">Electronics</option>
+        <option value="fmcg">FMCG</option>
+        <option value="fashion">Fashion</option>
+        <option value="home-appliances">Home Appliances</option>
+        <option value="others">Others</option>
+      </select>
+
+      <label for="contact">Contact Info *</label>
+      <input type="text" id="contact" name="contact" required placeholder="Email or Phone">
+
+      <label for="panUpload">Upload PAN Document *</label>
+      <input type="file" id="panUpload" name="panUpload" accept=".pdf,.jpg,.jpeg,.png" required>
+
+      <button type="submit" class="btn">Register Seller</button>
+    </form>
+
+    <!-- Buyer Signup Form -->
+    <form class="form-card" id="buyerForm" autocomplete="off" novalidate>
+      <h2>Buyer Signup</h2>
+      <label for="buyerName">Your Name *</label>
+      <input type="text" id="buyerName" name="buyerName" required>
+
+      <label for="buyerBusinessName">Business Name *</label>
+      <input type="text" id="buyerBusinessName" name="buyerBusinessName" required>
+
+      <label for="buyerGSTIN">GSTIN *</label>
+      <input type="text" id="buyerGSTIN" name="buyerGSTIN" required placeholder="22AAAAA0000A1Z5">
+      <div class="error-msg" id="gstinError"></div>
+
+      <label for="buyerEmail">Email *</label>
+      <input type="email" id="buyerEmail" name="buyerEmail" required>
+
+      <label for="buyerPhone">Phone *</label>
+      <input type="tel" id="buyerPhone" name="buyerPhone" required pattern="[0-9]{10}" placeholder="10-digit mobile">
+
+      <button type="submit" class="btn">Register Buyer</button>
+    </form>
+  </div>
+  <script>
+    // GSTIN validation for Buyer form
+    document.getElementById('buyerForm').onsubmit = function(e) {
+      const gstin = document.getElementById('buyerGSTIN').value.trim().toUpperCase();
+      const gstinPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+      const errorDiv = document.getElementById('gstinError');
+      if(!gstinPattern.test(gstin)) {
+        errorDiv.textContent = "Please enter a valid GSTIN (e.g., 22AAAAA0000A1Z5)";
+        e.preventDefault();
+      } else {
+        errorDiv.textContent = "";
+      }
+    };
+  </script>
+</body>
+</html>
